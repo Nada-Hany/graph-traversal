@@ -1,11 +1,23 @@
 #include <iostream>
 #include "Graph.h"
-
+#include "File.h"
+#include <sstream>
 using namespace std;
 
 #define el endl;
 
 int main() {
+
+	//files 
+	File file("TransportationMap.txt");
+	file.readFile();
+
+	//for (auto line : file.data) {
+	//	for (string word : line) {
+	//		cout << word << " ";
+	//	}
+	//	cout << el;
+	//}
 
 	Graph* mp = new Graph();
 	mp->addEdge("1", "2");
@@ -15,10 +27,12 @@ int main() {
 	mp->addEdge("4", "3");
 	mp->addEdge("4", "6");
 
+
+	//dfs and bfs 
 	string val;
 	int ans = -1;
 	Node* test = nullptr;
-	while (ans != 3) {
+	/*while (ans != 3) {
 		cout << "enter value and request\n";
 		cout << "for bfs -> 1, dfs -> 2, break -> 3 \n";
 		cin >> val;
@@ -36,6 +50,9 @@ int main() {
 		else {
 			cout << "node doesn't exist\n";
 		}
-	}
+	}*/
+
+
+	
 	return 0;
 }
