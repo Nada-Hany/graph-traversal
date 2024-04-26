@@ -31,6 +31,21 @@ void File::readFile() {
 		}
 	}
 }
+void File::convertToObjects(Graph* graph) {
+
+	for (auto line : data) {
+		if (line.size() < 2)
+			continue;
+		graph->addEdge(line[0], line[1]);
+	}
+}
+void File::toLowerCase(string& str) {
+	string result;
+	for (char c : str)
+		result += tolower(c);
+	str = result;
+}
+
 File::~File() {
 
 }
