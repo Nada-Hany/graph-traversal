@@ -13,22 +13,16 @@ class Node
 
 public:
 
-	enum class StateOfPath {
-		CLEAR, COLLISION
-	};
-	StateOfPath state;
 	Node* previous = nullptr;
-	map<Node*, vector<pair<string, double>>> transportations;
+	map<Node*,vector<pair<string, double>>> weights;
 	string value;
 
-	void setState(StateOfPath);
-	StateOfPath getState();
 	bool isVisted = false;
-	bool transportationExist(Node*, Node*, string);
-	void changePrice(vector<pair<string, double>>&, double, string);
-	void changeTranspName(vector<pair<string, double>>&, string);
-	//void deleteTransportation(vector<pair<string, double>>&);
-	//void addTransportation(vector<pair<string, double>>&);
+	int weightExist(Node*, Node*, string);
+	void changeWeightValue(vector<pair<string, double>>&, double, string);
+	void changeWeightType(vector<pair<string, double>>&, string);
+	void deleteWeight(Node*, Node*, string);
+	void addWeight(Node *, Node*, double, string);
 	Node(string);
 	~Node();
 
@@ -41,20 +35,23 @@ class Graph
 	bool childExist(Node*, Node*);
 	void toLowerCase(string&);
 	void getEachPath(Node*, vector<vector<string>>&);
-	void getAugmentedPath(Node*, Node*, vector<vector<string>>&);
+
 public:
+	int nodesNumber;
 	Node* destination = nullptr;
 	map<Node*, vector<Node*>> adj;
 	Graph();
 	void getPaths(vector<vector<string>>&);
 	Node* getNode(string);
 	void addEdge(string, string);
-	void addEdge(string, string, string, double);
-	void clearVisted();
+	void addEdge(string, string, string, double, int);
 	void dfs(Node*);
+	void dfs(Node*, Node*, vector<vector<string>>&, double);
 	void dfs(Node*, Node*, vector<vector<string>>&);
 	void bfs(Node*);
+	void clearVisted();
 	void clearPrevious();
+	bool checkCompleteness();
 	~Graph();
 };
 

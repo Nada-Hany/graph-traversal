@@ -28,7 +28,17 @@ int main() {
 	//}
 
 	Graph* mp = new Graph();
-	file.convertToObjects(mp);
+	//file.convertToObjects(mp);
+	file.convertWeights(mp);
+	//for (auto n : mp->adj) {
+	//	for(auto x: n.first->weights)
+	//	{
+	//		for (auto s : x.second)
+	//		{
+	//			cout << n.first->value << "  " << x.first->value << "  " << s.first << "  " << s.second << endl;
+	//		}
+	//	}
+	//}
 
 	//mp->addEdge("1", "2");
 	//mp->addEdge("2", "3");
@@ -39,38 +49,68 @@ int main() {
 	
 
 	//dfs and bfs 
-	string val, dest;
-	int ans = -1;
-	Node* test = nullptr;
+	string src, dest, weightType;
+	int ans = -1, action;
+	double weightValue;
+	Node* startNode = nullptr;
 	Node* destNode = nullptr;
 	vector<vector<string>> path;
 	while (ans != 3) {
 		path.clear();
-		cout << "enter value and request\n";
-		cout << "for bfs -> 1, dfs -> 2, break -> 3 , 4-> paths\n";
-		cin >> val;
+		cout << "enter request and value\n";
+		cout << "for bfs -> 1, dfs -> 2, break -> 3 , 4-> paths, 5->dealing with weights, 6-> complete graph\n";
 		cin >> ans;
+		if (ans == 6) {
+			if (mp->checkCompleteness())
+				cout << "graph is complete\n";
+			else
+				cout << "graph isn't complete\n";
+			continue;
+		}
+		cin >> src;
+		toLowercase(src);
 		if (ans == 4) {
 			cout << "enter dest\n";
 			cin >> dest;
 			destNode = mp->getNode(dest);
+		}else if (ans==5)
+		{
+			cout << "enter dest\n";
+			cin >> dest;
+			cout << "enter weight type and its value\n";
+			cin >> weightType >> weightValue;
+			toLowercase(weightType);
+			cout << "eneter action: 1-> add, 2-> delete, 3-> update weight value\n";
+			cin >> action;
+			mp->addEdge(src, dest, weightType, weightValue, action);
+			for (auto n : mp->adj) {
+				for (auto x : n.first->weights)
+				{
+					for (auto s : x.second)
+					{
+						cout << n.first->value << "  " << x.first->value << "  " << s.first << "  " << s.second << endl;
+					}
+				}
+			}
+			continue;
 		}
-		toLowercase(val);
-		test = mp->getNode(val);
+		
+		toLowercase(dest);
+		startNode = mp->getNode(src);
 		mp->clearVisted();
 		mp->clearPrevious();
 
-		if (test != nullptr)
+		if (startNode != nullptr)
 		{
 			if (ans == 2)
-				mp->dfs(test);
+				mp->dfs(startNode);
 			else if (ans == 1)
-				mp->bfs(test);
+				mp->bfs(startNode);
 			else if (ans == 4)
 			{
 				if (destNode != nullptr)
 				{
-					mp->dfs(test, destNode, path);
+					mp->dfs(startNode, destNode, path);
 					mp->getPaths(path);
 				}
 				else
