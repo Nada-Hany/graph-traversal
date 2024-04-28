@@ -27,10 +27,10 @@ int main() {
 	//	cout << el;
 	//}
 
-	Graph* mp = new Graph();
-	//file.convertToObjects(mp);
-	file.convertWeights(mp);
-	//for (auto n : mp->adj) {
+	Graph* graph = new Graph();
+	//file.convertToObjects(graph);
+	file.convertWeights(graph);
+	//for (auto n : graph->adj) {
 	//	for(auto x: n.first->weights)
 	//	{
 	//		for (auto s : x.second)
@@ -40,12 +40,12 @@ int main() {
 	//	}
 	//}
 
-	//mp->addEdge("1", "2");
-	//mp->addEdge("2", "3");
-	//mp->addEdge("1", "3");
-	//mp->addEdge("1", "5");
-	//mp->addEdge("4", "3");
-	//mp->addEdge("4", "6");
+	//graph->addEdge("1", "2");
+	//graph->addEdge("2", "3");
+	//graph->addEdge("1", "3");
+	//graph->addEdge("1", "5");
+	//graph->addEdge("4", "3");
+	//graph->addEdge("4", "6");
 	
 
 	//dfs and bfs 
@@ -58,13 +58,15 @@ int main() {
 	while (ans != 3) {
 		path.clear();
 		cout << "enter request and value\n";
-		cout << "for bfs -> 1, dfs -> 2, break -> 3 , 4-> paths, 5->dealing with weights, 6-> complete graph\n";
+		cout << "for bfs -> 1, dfs -> 2, break -> 3 , 4-> paths, 5->dealing with weights, 6-> cographlete graph\n";
 		cin >> ans;
+		if (ans == 3)
+			break;
 		if (ans == 6) {
-			if (mp->checkCompleteness())
-				cout << "graph is complete\n";
+			if (graph->checkCompleteness())
+				cout << "graph is cographlete\n";
 			else
-				cout << "graph isn't complete\n";
+				cout << "graph isn't cographlete\n";
 			continue;
 		}
 		cin >> src;
@@ -72,7 +74,7 @@ int main() {
 		if (ans == 4) {
 			cout << "enter dest\n";
 			cin >> dest;
-			destNode = mp->getNode(dest);
+			destNode = graph->getNode(dest);
 		}else if (ans==5)
 		{
 			cout << "enter dest\n";
@@ -82,8 +84,8 @@ int main() {
 			toLowercase(weightType);
 			cout << "eneter action: 1-> add, 2-> delete, 3-> update weight value\n";
 			cin >> action;
-			mp->addEdge(src, dest, weightType, weightValue, action);
-			for (auto n : mp->adj) {
+			graph->addEdge(src, dest, weightType, weightValue, action);
+			for (auto n : graph->adj) {
 				for (auto x : n.first->weights)
 				{
 					for (auto s : x.second)
@@ -96,22 +98,22 @@ int main() {
 		}
 		
 		toLowercase(dest);
-		startNode = mp->getNode(src);
-		mp->clearVisted();
-		mp->clearPrevious();
+		startNode = graph->getNode(src);
+		graph->clearVisted();
+		graph->clearPrevious();
 
 		if (startNode != nullptr)
 		{
 			if (ans == 2)
-				mp->dfs(startNode);
+				graph->dfs(startNode);
 			else if (ans == 1)
-				mp->bfs(startNode);
+				graph->bfs(startNode);
 			else if (ans == 4)
 			{
 				if (destNode != nullptr)
 				{
-					mp->dfs(startNode, destNode, path);
-					mp->getPaths(path);
+					graph->dfs(startNode, destNode, path);
+					graph->getPaths(path);
 				}
 				else
 					cout << "dest doesn't exist\n";
@@ -122,6 +124,6 @@ int main() {
 			cout << "node doesn't exist\n";
 		}
 	}
-
+	file.writeOnFile(graph);
 	return 0;
 }

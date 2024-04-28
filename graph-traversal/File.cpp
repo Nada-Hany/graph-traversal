@@ -28,8 +28,8 @@ void File::readFile() {
 			data.push_back(line);
 			line.clear();
 		}
+		file.close();
 	}
-	file.close();
 }
 
 void File::convertToObjects(Graph* graph) {
@@ -44,17 +44,30 @@ void File::convertToObjects(Graph* graph) {
 	}
 }
 void File::writeOnFile(Graph* graph){
-	ofstream file("output.txt");
+	ofstream file("TransportationMap.txt");
 	vector<pair<string, string>> addedNodes;
 	if (file.is_open()) {
 		file << graph->nodesNumber << el;
 		for (auto node : graph->adj) {
-			for (auto node : graph->adj) {
-				if ()
+			for (auto child : node.second) {
+				pair<string, string> value = make_pair(node.first->value, child->value);
+				pair<string, string> valueRev = make_pair(child->value, node.first->value);
+				//edge hasn't gotten written in the file yet -> adding the edge 
+				if (find(addedNodes.begin(), addedNodes.end(), value) == addedNodes.end() &&
+					find(addedNodes.begin(), addedNodes.end(), valueRev) == addedNodes.end()) {
+					Node* childNode = graph->getNode(child->value);	
+					file << node.first->value << " " << "-" << " " << child->value << " ";
+					//adding all weights
+					for (auto weight : node.first->weights[childNode])
+						file << weight.first << " " << weight.second << " ";
+					file << el;
+					addedNodes.push_back(value);
+					addedNodes.push_back(valueRev);
+				}
 			}
 		}
+		file.close();
 	}
-	file.close();
 }
 void File::convertWeights(Graph* graph) {
 

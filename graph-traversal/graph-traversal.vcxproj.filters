@@ -35,5 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="TransportationMap.txt" />
+    <Text Include="output.txt" />
   </ItemGroup>
 </Project>

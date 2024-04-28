@@ -183,6 +183,7 @@ bool Graph::inOpen(Node* node, queue<Node*> open) {
 	}
 	return false;
 }
+
 void Graph::dfs(Node* node) {
 	node->isVisted = true;
 	cout << node->value << "\t";
@@ -207,7 +208,9 @@ void Graph::dfs(Node* node, Node* dest, vector<vector<string>>& path) {
 		}
 	}
 }
+void Graph::dfs(Node* node, Node* dest, vector<vector<string>>& path, double weightValue) {
 
+}
 void Graph::getEachPath(Node* dest, vector<vector<string>>& path) {
 	destination = dest;
 	vector<string> eachPath;

@@ -45,8 +45,11 @@ public:
 	Node* getNode(string);
 	void addEdge(string, string);
 	void addEdge(string, string, string, double, int);
+	//traversing
 	void dfs(Node*);
+	//all path considering the weights
 	void dfs(Node*, Node*, vector<vector<string>>&, double);
+	//all possible paths without considering the weights
 	void dfs(Node*, Node*, vector<vector<string>>&);
 	void bfs(Node*);
 	void clearVisted();
