@@ -58,7 +58,8 @@ int main() {
 	while (ans != 3) {
 		path.clear();
 		cout << "enter request and value\n";
-		cout << "for bfs -> 1, dfs -> 2, break -> 3 , 4-> paths, 5->dealing with weights, 6-> cographlete graph\n";
+		cout << "for bfs -> 1, dfs -> 2, break -> 3 , 4-> paths,"
+			<< "5->dealing with weights, 6-> cographlete graph, 7-> path considering weights\n";
 		cin >> ans;
 		if (ans == 3)
 			break;
@@ -96,7 +97,6 @@ int main() {
 			}
 			continue;
 		}
-		
 		toLowercase(dest);
 		startNode = graph->getNode(src);
 		graph->clearVisted();
@@ -112,11 +112,14 @@ int main() {
 			{
 				if (destNode != nullptr)
 				{
-					graph->dfs(startNode, destNode, path);
-					graph->getPaths(path);
+					graph->dfs(startNode, destNode);
+					graph->getPaths();
 				}
 				else
 					cout << "dest doesn't exist\n";
+			}
+			else if (ans == 7) {
+				//all path considering the weights here
 			}
 			cout << el;
 		}

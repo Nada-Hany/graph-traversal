@@ -6,6 +6,7 @@
 using namespace std;
 
 #define el endl
+#define MAX 1000
 
 //node class
 Node::Node(string val) {
@@ -27,7 +28,7 @@ int Node::weightExist(Node* parent, Node* child, string weightType) {
 	}
 	return -1;
 }
-//update el mfrod tkon fel weightValue bs wla type w weightValue ?
+//update el mfrod tkon fel weight value bs wla type w weight value?
 void Node::changeWeightValue(vector<pair<string, double>>& allWeights, double weightValue, string weightType) {
 	for (auto& t : allWeights) {
 		if (weightType == t.first) 
@@ -46,7 +47,6 @@ void Node::changeWeightType(vector<pair<string, double>>& allweights, string wei
 		}
 	}
 }
-
 void Node::deleteWeight(Node* parent, Node* child, string weightType) {
 	int index = parent->weightExist(parent, child, weightType);
 	parent->weights[child].erase(parent->weights[child].begin() + index);
@@ -57,8 +57,9 @@ void Node::addWeight(Node* parent, Node* child, double weightValue, string weigh
 
 Node::~Node() {}
 
-//graph class
-Graph::Graph() {}
+
+//graph class -----------
+Graph::Graph(){}
 
 void Graph::toLowerCase(string& str) {
 	string result;
@@ -140,7 +141,6 @@ void Graph::addEdge(string node1, string node2, string weightType, double weight
 	}
 
 }
-
 void Graph::addEdge(string node1, string node2) {
 	toLowerCase(node1);
 	toLowerCase(node2);
@@ -192,10 +192,10 @@ void Graph::dfs(Node* node) {
 		if (!(child->isVisted))
 			dfs(child);
 }
-void Graph::dfs(Node* node, Node* dest, vector<vector<string>>& path) {
+void Graph::dfs(Node* node, Node* dest) {
 	node->isVisted = true;
 	if (node == dest )
-		getEachPath(dest, path);
+		getEachPath(dest);
 	
 	for (Node* child : adj[node])
 	{	
@@ -203,37 +203,37 @@ void Graph::dfs(Node* node, Node* dest, vector<vector<string>>& path) {
 		if (!(child->isVisted))
 		{	
 			child->previous = node;
-			dfs(child, dest, path);
+			dfs(child, dest);
 			child->isVisted = false;
 		}
 	}
 }
-void Graph::dfs(Node* node, Node* dest, vector<vector<string>>& path, double weightValue) {
 
-}
-void Graph::getEachPath(Node* dest, vector<vector<string>>& path) {
+
+void Graph::getEachPath(Node* dest) {
 	destination = dest;
-	vector<string> eachPath;
+	vector<string> path;
 	if (dest->previous == nullptr) 
-		eachPath.push_back("destination is start");
+		path.push_back("destination is start");
 	else {
 		Node* tmp = dest;
 		while (tmp->previous != nullptr) {
-			eachPath.push_back(tmp->value);
+			path.push_back(tmp->value);
 			tmp = tmp->previous;
 			if (tmp->previous == nullptr)
-				eachPath.push_back(tmp->value);
+				path.push_back(tmp->value);
 		}
 	}
-	path.push_back(eachPath);
+	paths.push_back(path);
 }
-void Graph::getPaths(vector<vector<string>>& paths) {
+void Graph::getPaths() {
 	for (auto path : paths) {
 		for (int i = path.size() - 1; i >= 0; i--) 
 			cout << path[i] << " ";
 		cout << el;
 	}
 }
+
 Node* Graph::getNode(string value) {
 	for (auto node : adj) {
 		if (node.first->value == value)
@@ -267,6 +267,59 @@ void Graph::clearPrevious() {
 void Graph::clearVisted() {
 	for (auto node : adj)
 		node.first->isVisted = false;
+}
+//dont ask me abt complexity pls 
+void Graph::getWeightedPaths(vector <vector< pair<vector<string>, double >> >& allPaths, double budget) {
+	vector < pair<vector<string>, double>>final;
+	bool firstTime = true;
+	//each possible path
+	for (auto eachPath : paths) {
+		bool firstTime = true;
+		//each node for each path
+		for (int i = eachPath.size() - 2; i >= 0; i--) {
+			Node* node1 = getNode(eachPath[i]);
+			Node* node2 = getNode(eachPath[i+1]);
+			vector<pair <vector< string>, double >> tmp;
+			vector<pair <vector< string>, double >> combinations;
+			vector<string> ways;
+			//all weight types for each edge 
+			for (auto weight : node1->weights[node2]) {
+				if (weight.second > budget)
+					continue;
+				ways.push_back(weight.first);
+				tmp.push_back(make_pair(ways, weight.second));
+			}
+			//no combinations yet
+			if (firstTime)
+			{
+				firstTime = false;
+				final = tmp;
+			}
+			//final -> 1st edge , tmp -> 2nd edge >> add on final /
+			else {
+				int outer = -1;
+				//getting combinations
+				for (auto n1 : final) {
+					int inner = -1;
+					outer ++;
+					vector<string> weightType;
+					for (auto n2 : tmp) {
+						inner++;
+						//valid combin.
+						if (n1.second + n2.second <= budget) {
+						/*	n1.first.push_back(n2.first[inner]);
+							n1.second += n2.second;*/
+							weightType.push_back(n1.first[outer]);
+							weightType.push_back(n2.first[inner]);
+							combinations.push_back(make_pair(weightType, n1.second + n2.second));
+						}
+					}
+				}
+			}
+		}
+		/*next iteration -> another path*/
+		allPaths.push_back(final);
+	}
 }
 
 Graph::~Graph() {}

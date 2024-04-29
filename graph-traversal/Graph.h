@@ -34,27 +34,28 @@ class Graph
 	bool inOpen(Node*, queue<Node*>);
 	bool childExist(Node*, Node*);
 	void toLowerCase(string&);
-	void getEachPath(Node*, vector<vector<string>>&);
+	void getEachPath(Node*);
+	vector<vector<string>> paths;
 
 public:
-	int nodesNumber;
+	int nodesNumber = 0;
 	Node* destination = nullptr;
 	map<Node*, vector<Node*>> adj;
+
 	Graph();
-	void getPaths(vector<vector<string>>&);
+	void getPaths();
 	Node* getNode(string);
 	void addEdge(string, string);
 	void addEdge(string, string, string, double, int);
 	//traversing
 	void dfs(Node*);
-	//all path considering the weights
-	void dfs(Node*, Node*, vector<vector<string>>&, double);
 	//all possible paths without considering the weights
-	void dfs(Node*, Node*, vector<vector<string>>&);
+	void dfs(Node*, Node*);
 	void bfs(Node*);
 	void clearVisted();
 	void clearPrevious();
 	bool checkCompleteness();
+	void getWeightedPaths(vector <vector< pair<vector<string>, double >> > &, double);
 	~Graph();
 };
 
