@@ -4,6 +4,7 @@
 *.userosscache
 *.sln.docstates
 *.userprefs
+.vs/
 x64/
 x86/
 [Dd]ebug/
@@ -26,3 +27,11 @@ bld/
 /logs/
 debug/
 .vs/graph-traversal/v17/Browse.VC.opendb
+*.ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+

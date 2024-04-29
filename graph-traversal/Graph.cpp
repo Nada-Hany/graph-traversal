@@ -210,6 +210,7 @@ void Graph::dfs(Node* node, Node* dest) {
 }
 
 
+
 void Graph::getEachPath(Node* dest) {
 	destination = dest;
 	vector<string> path;
@@ -288,6 +289,7 @@ void Graph::getWeightedPaths(vector <vector< pair<vector<string>, double >> >& a
 					continue;
 				ways.push_back(weight.first);
 				tmp.push_back(make_pair(ways, weight.second));
+				
 			}
 			//no combinations yet
 			if (firstTime)
@@ -302,18 +304,18 @@ void Graph::getWeightedPaths(vector <vector< pair<vector<string>, double >> >& a
 				for (auto n1 : final) {
 					int inner = -1;
 					outer ++;
-					vector<string> weightType;
 					for (auto n2 : tmp) {
+						vector<string> weightType;
 						inner++;
 						//valid combin.
 						if (n1.second + n2.second <= budget) {
-						/*	n1.first.push_back(n2.first[inner]);
-							n1.second += n2.second;*/
+
 							weightType.push_back(n1.first[outer]);
 							weightType.push_back(n2.first[inner]);
 							combinations.push_back(make_pair(weightType, n1.second + n2.second));
 						}
 					}
+					
 				}
 			}
 		}
