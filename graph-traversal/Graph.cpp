@@ -29,7 +29,7 @@ int Node::weightExist(Node* parent, Node* child, string weightType) {
 	return -1;
 }
 //update el mfrod tkon fel weight value bs wla type w weight value?
-void Node::changeWeightValue(vector<pair<string, double>>& allWeights, double weightValue, string weightType) {
+void Node::changeWeightValue(vector<pair<string, float>>& allWeights, float weightValue, string weightType) {
 	for (auto& t : allWeights) {
 		if (weightType == t.first) 
 		{
@@ -38,7 +38,7 @@ void Node::changeWeightValue(vector<pair<string, double>>& allWeights, double we
 		}
 	}
 }
-void Node::changeWeightType(vector<pair<string, double>>& allweights, string weightType) {
+void Node::changeWeightType(vector<pair<string, float>>& allweights, string weightType) {
 	for (auto& t : allweights) {
 		if (weightType == t.first)
 		{
@@ -51,7 +51,7 @@ void Node::deleteWeight(Node* parent, Node* child, string weightType) {
 	int index = parent->weightExist(parent, child, weightType);
 	parent->weights[child].erase(parent->weights[child].begin() + index);
 }
-void Node::addWeight(Node* parent, Node* child, double weightValue, string weightType) {
+void Node::addWeight(Node* parent, Node* child, float weightValue, string weightType) {
 	parent->weights[child].push_back(make_pair(weightType, weightValue));
 }
 
@@ -67,10 +67,10 @@ void Graph::toLowerCase(string& str) {
 		result += tolower(c);
 	str = result;
 }
-//Node*, vector<pair<string, double>> >  <<- transportation stucture
+//Node*, vector<pair<string, float>> >  <<- transportation stucture
 //actions: 1->add a new transp, 2->delete, 3->update 
 //hayhsal eh lw ana b add transp already mwgoda? ha3ml update wla a-drop el request
-void Graph::addEdge(string node1, string node2, string weightType, double weightValue, int action) {
+void Graph::addEdge(string node1, string node2, string weightType, float weightValue, int action) {
 	toLowerCase(node1);
 	toLowerCase(node2);
 	toLowerCase(weightType);
@@ -209,8 +209,6 @@ void Graph::dfs(Node* node, Node* dest) {
 	}
 }
 
-
-
 void Graph::getEachPath(Node* dest) {
 	destination = dest;
 	vector<string> path;
@@ -228,7 +226,7 @@ void Graph::getEachPath(Node* dest) {
 	paths.push_back(path);
 }
 void Graph::getPaths() {
-	for (auto path : paths) {
+	for (auto& path : paths) {
 		for (int i = path.size() - 1; i >= 0; i--) 
 			cout << path[i] << " ";
 		cout << el;
@@ -236,7 +234,7 @@ void Graph::getPaths() {
 }
 
 Node* Graph::getNode(string value) {
-	for (auto node : adj) {
+	for (auto& node : adj) {
 		if (node.first->value == value)
 			return node.first;
 	}
@@ -252,36 +250,37 @@ bool Graph::childExist(Node* parent, Node* child) {
 bool Graph::checkCompleteness() {
 	if (adj.size() != nodesNumber)
 		return false;
-	for (auto node : adj) 
+	for (auto& node : adj) 
 		if(node.second.size() != nodesNumber - 1)
 			return false;
 	return true;
 }
 
 void Graph::clearPrevious() {
-	for (auto n : adj) {
+	for (auto& n : adj) {
 		n.first->previous = nullptr;
 		for (auto x : n.second)
 			x->previous = nullptr;
 	}
 }
 void Graph::clearVisted() {
-	for (auto node : adj)
+	for (auto& node : adj)
 		node.first->isVisted = false;
 }
 //dont ask me abt complexity pls 
-void Graph::getWeightedPaths(vector <vector< pair<vector<string>, double >> >& allPaths, double budget) {
-	vector < pair<vector<string>, double>>final;
+void Graph::getWeightedPaths(vector <vector< pair<vector<string>, float >> >& allPaths, float budget) {
+	vector < pair<vector<string>, float>>final;
 	bool firstTime = true;
 	//each possible path
+	vector <string> test;
 	for (auto eachPath : paths) {
 		bool firstTime = true;
 		//each node for each path
 		for (int i = eachPath.size() - 2; i >= 0; i--) {
 			Node* node1 = getNode(eachPath[i]);
 			Node* node2 = getNode(eachPath[i+1]);
-			vector<pair <vector< string>, double >> tmp;
-			vector<pair <vector< string>, double >> combinations;
+			vector<pair <vector< string>, float >> tmp;
+			vector<pair <vector< string>, float >> combinations;
 			vector<string> ways;
 			//all weight types for each edge 
 			for (auto weight : node1->weights[node2]) {
@@ -289,7 +288,6 @@ void Graph::getWeightedPaths(vector <vector< pair<vector<string>, double >> >& a
 					continue;
 				ways.push_back(weight.first);
 				tmp.push_back(make_pair(ways, weight.second));
-				
 			}
 			//no combinations yet
 			if (firstTime)
@@ -324,4 +322,11 @@ void Graph::getWeightedPaths(vector <vector< pair<vector<string>, double >> >& a
 	}
 }
 
+void Graph::validWeightedPath(Node* start, Node* dest, float budget) {
+	dfs(start, dest);
+	vector <vector< pair<vector<string>, float >> >path;
+	//getWeightedPaths(path, budget);
+	int j=0;
+	//path number 
+}
 Graph::~Graph() {}

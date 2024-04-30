@@ -48,29 +48,48 @@ int main() {
 	//graph->addEdge("4", "6");
 	
 	//checking weighted paths
-	Node * start = graph->getNode("cairo");
+	Node* start = graph->getNode("cairo");
 	Node* des = graph->getNode("dahab");
 	graph->dfs(start, des);
-	vector <vector< pair<vector<string>, double >> > paths;
+	vector <vector< pair<vector<string>, float >> > paths;
 	graph->getWeightedPaths(paths, 500);
+	//v<v<v<string>>>
+	string n = "";
 	for (auto path : paths) {
 		for (auto allWeights : path) {
 			for (auto weight : allWeights.first) {
 				cout << weight << " ";
+				n = n + weight;
+				n = n + " ";
 			}
+			n = n + to_string(allWeights.second);
+			n = n + "\n";
+		
 			cout << allWeights.second;
 			cout << el;
 		}
-		cout << el;
 	}
-
+	cout << el;
+	cout << el;
+	cout << el;
+	cout << n;
+	//for (auto path : paths) {
+	//	for (auto allWeights : path) {
+	//		for (auto weight : allWeights.first) {
+	//			cout << weight << " ";
+	//		}
+	//		cout << allWeights.second;
+	//		cout << el;
+	//	}
+	//	cout << el;
+	//}
 
 
 
 	//dfs and bfs 
 	string src, dest, weightType;
 	int ans = -1, action;
-	double weightValue;
+	float weightValue;
 	Node* startNode = nullptr;
 	Node* destNode = nullptr;
 	vector<vector<string>> path;

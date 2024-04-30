@@ -14,15 +14,15 @@ class Node
 public:
 
 	Node* previous = nullptr;
-	map<Node*,vector<pair<string, double>>> weights;
+	map<Node*,vector<pair<string, float>>> weights;
 	string value;
 
 	bool isVisted = false;
 	int weightExist(Node*, Node*, string);
-	void changeWeightValue(vector<pair<string, double>>&, double, string);
-	void changeWeightType(vector<pair<string, double>>&, string);
+	void changeWeightValue(vector<pair<string, float>>&, float, string);
+	void changeWeightType(vector<pair<string, float>>&, string);
 	void deleteWeight(Node*, Node*, string);
-	void addWeight(Node *, Node*, double, string);
+	void addWeight(Node *, Node*, float, string);
 	Node(string);
 	~Node();
 
@@ -46,7 +46,7 @@ public:
 	void getPaths();
 	Node* getNode(string);
 	void addEdge(string, string);
-	void addEdge(string, string, string, double, int);
+	void addEdge(string, string, string, float, int);
 	//traversing
 	void dfs(Node*);
 	//all possible paths without considering the weights
@@ -55,7 +55,8 @@ public:
 	void clearVisted();
 	void clearPrevious();
 	bool checkCompleteness();
-	void getWeightedPaths(vector <vector< pair<vector<string>, double >> > &, double);
+	void getWeightedPaths(vector <vector< pair<vector<string>, float >> > &, float);
+	void validWeightedPath(Node*, Node*, float);
 	~Graph();
 };
 
