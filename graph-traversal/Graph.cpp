@@ -236,6 +236,27 @@ void Graph::dfs(Node* node, Node* dest) {
 	}
 }
 
+
+vector<pair<float, string>> Graph::getAllPaths(Node* start, Node* dest, float budget) {
+	vector<pair<float, string>> out;
+	dfs(start, dest);
+	vector <vector< pair<vector<string>, float >> > p;
+	getWeightedPaths(p, budget);
+	for (int i = 0; i < p.size(); i++) {
+		for (auto allWeights : p[i]) {
+			string s = "";
+			int indWeight = 0;
+			s = s + paths[i][paths[i].size() - 1] + " ";
+			for (int nodeInd = paths[i].size() - 2; nodeInd >= 0; nodeInd--) {
+				s = s + allWeights.first[indWeight] + " " + paths[i][nodeInd] + " ";
+				indWeight++;
+			}
+			out.push_back(make_pair(allWeights.second, s));
+		}
+	}
+	sort(out.begin(), out.end());
+	return out;
+}
 void Graph::getEachPath(Node* dest) {
 	destination = dest;
 	vector<string> path;
@@ -353,11 +374,4 @@ void Graph::getWeightedPaths(vector <vector< pair<vector<string>, float >> >& al
 	}
 }
 
-void Graph::validWeightedPath(Node* start, Node* dest, float budget) {
-	dfs(start, dest);
-	vector <vector< pair<vector<string>, float >> >path;
-	//getWeightedPaths(path, budget);
-	int j=0;
-	//path number 
-}
 Graph::~Graph() {}

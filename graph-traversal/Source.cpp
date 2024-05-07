@@ -26,32 +26,6 @@ int main() {
 	Graph* graph = new Graph();
 	file.convertWeights(graph);
 
-	//checking weighted paths
-	Node* start = graph->getNode("cairo");
-	Node* des = graph->getNode("dahab");
-	graph->dfs(start, des);
-	vector <vector< pair<vector<string>, float >> > paths;
-	graph->getWeightedPaths(paths, 500);
-
-	vector<pair<float,string>> out;
-	for (int i = 0; i < paths.size(); i++) {
-		for (auto allWeights : paths[i]) {
-			string s = "";
-			int indWeight = 0;
-			s= s+ graph->paths[i][graph->paths[i].size() - 1] + " ";
-			for (int nodeInd = graph->paths[i].size()-2; nodeInd >=0; nodeInd--) {
-				s = s + allWeights.first[indWeight] + " " + graph->paths[i][nodeInd] + " ";
-				indWeight++;
-			}
-			out.push_back(make_pair(allWeights.second, s));
-		}
-	}
-	sort(out.begin(), out.end());
-	for (auto n : out) {
-		cout << n.second << "  " << n.first << el;
-	}
-
-
 	//dfs and bfs 
 	string src, dest, weightType;
 	int ans = -1, action;
@@ -123,7 +97,16 @@ int main() {
 					cout << "dest doesn't exist\n";
 			}
 			else if (ans == 7) {
+				cout << "enter weight value\n";
+				float weightValue;
+				cin >> weightValue;
 				//all path considering the weights here
+				vector<pair<float, string>> out = graph->getAllPaths(startNode, destNode, weightValue);
+
+				for (auto n : out) {
+					cout << n.second << "  " << n.first << el;
+				}
+
 			}
 			cout << el;
 		}

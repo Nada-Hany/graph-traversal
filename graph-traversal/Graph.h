@@ -56,7 +56,7 @@ public:
 	void clearPrevious();
 	bool checkCompleteness();
 	void getWeightedPaths(vector <vector< pair<vector<string>, float >> > &, float);
-	void validWeightedPath(Node*, Node*, float);
+	vector<pair<float, string>> getAllPaths(Node*, Node*, float);
 	~Graph();
 };
 
