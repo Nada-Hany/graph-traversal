@@ -46,10 +46,13 @@ void File::convertToObjects(Graph* graph) {
 void File::writeOnFile(Graph* graph){
 	ofstream file("TransportationMap.txt");
 	vector<pair<string, string>> addedNodes;
+	cout << " innnnnnnnnnnn\n";
 	if (file.is_open()) {
 		file << graph->nodesNumber << el;
 		for (auto node : graph->adj) {
+			cout << "in pranet writing\n" << node.first->value << el;
 			for (auto child : node.second) {
+				cout << "in chils node " << child->value << el;
 				pair<string, string> value = make_pair(node.first->value, child->value);
 				pair<string, string> valueRev = make_pair(child->value, node.first->value);
 				//edge hasn't gotten written in the file yet -> adding the edge 
@@ -59,14 +62,16 @@ void File::writeOnFile(Graph* graph){
 					file << node.first->value << " " << "-" << " " << child->value << " ";
 					//adding all weights
 					for (auto weight : node.first->weights[childNode])
+					{
+						cout << weight.first << " " << weight.second << " ";
 						file << weight.first << " " << weight.second << " ";
+					}
 					file << el;
 					addedNodes.push_back(value);
 					addedNodes.push_back(valueRev);
 				}
 			}
 		}
-		file.close();
 	}
 }
 void File::convertWeights(Graph* graph) {

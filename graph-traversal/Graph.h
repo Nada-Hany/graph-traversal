@@ -35,9 +35,9 @@ class Graph
 	bool childExist(Node*, Node*);
 	void toLowerCase(string&);
 	void getEachPath(Node*);
-	vector<vector<string>> paths;
 
 public:
+	vector<vector<string>> paths;
 	int nodesNumber = 0;
 	Node* destination = nullptr;
 	map<Node*, vector<Node*>> adj;

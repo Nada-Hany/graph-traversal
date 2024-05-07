@@ -23,8 +23,14 @@ int Node::weightExist(Node* parent, Node* child, string weightType) {
 				return;*/
 
 		for (int i = 0; i < parent->weights[child].size(); i++)
-			if (parent->weights[child][i].first == weightType)
-				return i;
+		{
+		//	cout << i << el;
+				if (parent->weights[child][i].first == weightType)
+				{
+					cout << parent->weights[child][i].first << el;
+						return i;
+				}
+		}
 	}
 	return -1;
 }
@@ -47,9 +53,30 @@ void Node::changeWeightType(vector<pair<string, float>>& allweights, string weig
 		}
 	}
 }
+vector<pair<string, float>> delete_(Node* parent, Node* child, string weightType) {
+	vector<pair<string, float>> test;
+	for (auto n : parent->weights[child]) {
+		if (n.first != weightType) {
+			test.push_back(make_pair(n.first, n.second));
+		}
+	}
+	return test;
+}
 void Node::deleteWeight(Node* parent, Node* child, string weightType) {
-	int index = parent->weightExist(parent, child, weightType);
-	parent->weights[child].erase(parent->weights[child].begin() + index);
+	/*int index = parent->weightExist(parent, child, weightType);
+	if (index != -1)
+	{
+		parent->weights[child].erase(parent->weights[child].begin() + index);
+		int i = child->weightExist(child, parent, weightType);
+		if (i != -1)
+			child->weights[parent].erase(child->weights[parent].begin() + i);
+		return true;
+	}
+	else
+		return false;*/
+	int initial_size = parent->weights[child].size();
+	parent->weights[child] = delete_(parent, child, weightType);
+
 }
 void Node::addWeight(Node* parent, Node* child, float weightValue, string weightType) {
 	parent->weights[child].push_back(make_pair(weightType, weightValue));
@@ -223,6 +250,9 @@ void Graph::getEachPath(Node* dest) {
 				path.push_back(tmp->value);
 		}
 	}
+	for (auto n : path)
+		cout << n << " ";
+	cout << el;
 	paths.push_back(path);
 }
 void Graph::getPaths() {
@@ -315,6 +345,7 @@ void Graph::getWeightedPaths(vector <vector< pair<vector<string>, float >> >& al
 					}
 					
 				}
+				final = combinations;
 			}
 		}
 		/*next iteration -> another path*/

@@ -3,6 +3,9 @@
 #include "File.h"
 #include <vector>
 #include <sstream>
+#include <set>
+#include <algorithm>
+
 using namespace std;
 
 #define el endl;
@@ -20,70 +23,33 @@ int main() {
 	File file("TransportationMap.txt");
 	file.readFile();
 
-	//for (auto line : file.data) {
-	//	for (string word : line) {
-	//		cout << word << " ";
-	//	}
-	//	cout << el;
-	//}
-
 	Graph* graph = new Graph();
-	//file.convertToObjects(graph);
 	file.convertWeights(graph);
-	//for (auto n : graph->adj) {
-	//	for(auto x: n.first->weights)
-	//	{
-	//		for (auto s : x.second)
-	//		{
-	//			cout << n.first->value << "  " << x.first->value << "  " << s.first << "  " << s.second << endl;
-	//		}
-	//	}
-	//}
 
-	//graph->addEdge("1", "2");
-	//graph->addEdge("2", "3");
-	//graph->addEdge("1", "3");
-	//graph->addEdge("1", "5");
-	//graph->addEdge("4", "3");
-	//graph->addEdge("4", "6");
-	
 	//checking weighted paths
 	Node* start = graph->getNode("cairo");
 	Node* des = graph->getNode("dahab");
 	graph->dfs(start, des);
 	vector <vector< pair<vector<string>, float >> > paths;
 	graph->getWeightedPaths(paths, 500);
-	//v<v<v<string>>>
-	string n = "";
-	for (auto path : paths) {
-		for (auto allWeights : path) {
-			for (auto weight : allWeights.first) {
-				cout << weight << " ";
-				n = n + weight;
-				n = n + " ";
+
+	vector<pair<float,string>> out;
+	for (int i = 0; i < paths.size(); i++) {
+		for (auto allWeights : paths[i]) {
+			string s = "";
+			int indWeight = 0;
+			s= s+ graph->paths[i][graph->paths[i].size() - 1] + " ";
+			for (int nodeInd = graph->paths[i].size()-2; nodeInd >=0; nodeInd--) {
+				s = s + allWeights.first[indWeight] + " " + graph->paths[i][nodeInd] + " ";
+				indWeight++;
 			}
-			n = n + to_string(allWeights.second);
-			n = n + "\n";
-		
-			cout << allWeights.second;
-			cout << el;
+			out.push_back(make_pair(allWeights.second, s));
 		}
 	}
-	cout << el;
-	cout << el;
-	cout << el;
-	cout << n;
-	//for (auto path : paths) {
-	//	for (auto allWeights : path) {
-	//		for (auto weight : allWeights.first) {
-	//			cout << weight << " ";
-	//		}
-	//		cout << allWeights.second;
-	//		cout << el;
-	//	}
-	//	cout << el;
-	//}
-
+	sort(out.begin(), out.end());
+	for (auto n : out) {
+		cout << n.second << "  " << n.first << el;
+	}
 
 
 	//dfs and bfs 
